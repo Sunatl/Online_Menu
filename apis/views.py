@@ -55,9 +55,13 @@ class BillListCreateView(ListCreateAPIView):
     search_fields = ['customer__name', 'table__table_name']
     ordering_fields = ['customer__name', 'total_sum']
     
-    def get_queryset(self):
+def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = Bill.objects.filter(is_paid = False)
+        bill = self.request.query_params.get('bill_id', None)
+        if bill:
+            queryset = queryset.filter(id=bill)
+        queryset = queryset.prefetch_related('orders')  
+        return queryset
 
 
 class BillRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):

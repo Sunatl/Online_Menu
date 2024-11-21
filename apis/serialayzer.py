@@ -25,19 +25,6 @@ class TableSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BillSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Bill
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['customer_name'] = instance.customer.name  
-        data['customer_phone'] = instance.customer.phone 
-        data['table_name'] = instance.table.table_name 
-        return data
-
-
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
@@ -49,6 +36,21 @@ class OrderSerializer(serializers.ModelSerializer):
         data['bill_id'] = instance.bill.id  
         data['total_price'] = instance.quantity * instance.menu_item.price  
         return data
+    
+class BillSerializer(serializers.ModelSerializer):
+    orders = OrderSerializer(many=True, read_only=True)
+    class Meta:
+        model = Bill
+        fields = ['table', 'customer', 'total_sum',"is_paid", 'orders']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['customer_name'] = instance.customer.name  
+        data['customer_phone'] = instance.customer.phone 
+        data['table_name'] = instance.table.table_name 
+        return data
+
+
 
 
 class CustomerSerializer(serializers.ModelSerializer):

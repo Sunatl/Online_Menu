@@ -70,7 +70,7 @@ class Bill(models.Model):
 
 
 class Order(models.Model):
-    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE,related_name="orders")
     quantity = models.PositiveIntegerField()
     menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
 
