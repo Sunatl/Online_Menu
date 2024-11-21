@@ -54,6 +54,10 @@ class BillListCreateView(ListCreateAPIView):
     filterset_fields = ['customer__name', 'total_sum', 'table__table_name', 'is_paid']
     search_fields = ['customer__name', 'table__table_name']
     ordering_fields = ['customer__name', 'total_sum']
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = Bill.objects.filter(is_paid = False)
 
 
 class BillRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -79,9 +83,9 @@ class CustomerListCreateView(ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['name', 'phone', 'email', 'total_spent', 'is_paid']
+    filterset_fields = ['name', 'phone', 'email',  'is_paid']
     search_fields = ['name', 'phone', 'email']
-    ordering_fields = ['name', 'total_spent']
+    ordering_fields = ['name']
 
 
 class CustomerRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
