@@ -89,6 +89,8 @@ class Order(models.Model):
         self.bill.save()
 
 
+
+
 class Payment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
