@@ -39,6 +39,10 @@ class OrderSerializer(serializers.ModelSerializer):
     
 class BillSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True, read_only=True)
+    # orders = serializers.StringRelatedField(many=True)
+    # orders = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # orders = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='order_list')
+
     class Meta:
         model = Bill
         fields = ['table', 'customer', 'total_sum',"is_paid", 'orders']
